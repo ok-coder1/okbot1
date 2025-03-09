@@ -2,7 +2,6 @@
     "apps": [{
       "name": "okbot1",
       "script": "main.py",
-      "interpreter": "python3",
-      "interpreter_args": "-u"
+      "interpreter": "python3"
     }]
   }
