@@ -1,0 +1,6 @@
+# macOS files
+*.DS_Store
+.DS_Store
+
+# Discord Credentials
+discord_creds.txt

@@ -1,7 +1,7 @@
 {
-    "apps": [{
-      "name": "okbot1",
-      "script": "main.py",
-      "interpreter": "python3"
-    }]
-  }
+  "apps": [{
+    "name": "okbot1",
+    "script": "main.py",
+    "interpreter": "python3"
+  }]
+}
