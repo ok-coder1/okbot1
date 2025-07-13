@@ -99,7 +99,7 @@ async def kick(ctx: Context, user: Member, reason: str = None):
     await user.kick(reason = reason)
     return ctx.response.send_message("Successfully kicked `{}` for **{}**.".format(str(user), reason))
 
-@client.command()
+@client.command(user_install = True)
 @commands.describe(
     yes = "The user saying yes",
     no = "The user saying no"
