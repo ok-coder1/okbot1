@@ -1,11 +1,11 @@
-from discord_http import Context, Client, commands, Member, Guild, BanEntry, PartialGuild
-import linecache
+from discord_http import Context, Client, commands, Member, PartialGuild
+import os
 from datetime import timedelta
 
 client = Client(
-    token = linecache.getline("discord_creds.txt", 0),
-    application_id = linecache.getline("discord_creds.txt", 1),
-    public_key = linecache.getline("discord_creds.txt", 2),
+    token = os.environ["DISCORD_BOT_TOKEN"],
+    application_id = int(os.environ["DISCORD_APPLICATION_ID"]),
+    public_key = os.environ["DISCORD_PUBLIC_KEY"],
     sync = True
 )
 
@@ -34,14 +34,13 @@ async def avatar(ctx: Context, user: Member):
 )
 async def ban(ctx: Context, user: Member, reason: str = None):
     """ Ban a user """
+    guild = ctx.guild.fetch()
     await PartialGuild.ban(member = user, reason = reason)
-    await BanEntry.user(user)
-    await BanEntry.reason(reason)
     if reason is None:
-        await user.send("You were banned in **`{}`**.".format(Guild.name))
+        await user.send("You were banned in **`{}`**.".format(guild.name))
         return ctx.response.send_message("Successfully banned `{}`.".format(str(user)))
     else:
-        await user.send("You were banned in **`{}`** for the following reason: **{}**.".format(Guild.name, reason))
+        await user.send("You were banned in **`{}`** for the following reason: **{}**.".format(guild.name, reason))
         return ctx.response.send_message("Successfully banned `{}` for **{}**.".format(str(user), reason))
 
 @client.command()
@@ -51,9 +50,10 @@ async def ban(ctx: Context, user: Member, reason: str = None):
 )
 async def unban(ctx: Context, user: Member, reason: str = None):
     """ Unban a user """
+    guild = ctx.guild.fetch()
     await PartialGuild.unban(member = user, reason = reason)
     if reason is None:
-        await user.send("You were unbanned in **`{}`**.".format(Guild.name))
+        await user.send("You were unbanned in **`{}`**.".format(guild.name))
         return ctx.response.send_message("Successfully unbanned `{}`.".format(str(user)))
     else:
         await user.send("You werer unbanned in **`{}`** for the following reason: **{}**.".format(str(user), reason))
@@ -69,20 +69,22 @@ async def unban(ctx: Context, user: Member, reason: str = None):
 )
 async def mute(ctx: Context, user: Member, days: int, hours: int, minutes: int, reason: str = None):
     """ Mute a user """
+    guild = ctx.guild.fetch()
     muted_time = timedelta(days = days, hours = hours, minutes = minutes)
     await user.edit(communication_disabled_until = muted_time)
-    await user.send("You were muted in **`{}`** for `{}` minutes for the following reason: **{}**.".format(Guild.name, str(muted_time), reason))
+    await user.send("You were muted in **`{}`** for `{}` minutes for the following reason: **{}**.".format(guild.name, str(muted_time), reason))
     return ctx.response.send_message("Successfully muted `{}` for **{}**.".format(str(user), reason))
 
 @client.command()
 @commands.describe(
-    user = "The user you want to mute",
+    user = "The user you want to unmute",
     reason = "The reason you're unmuting this user (leave blank if none)"
 )
 async def unmute(ctx: Context, user: Member):
     """ Unmute a user """
+    guild = ctx.guild.fetch()
     await user.edit(communication_disabled_until = 0)
-    await user.send("You were unmuted in **{}**.".format(Guild.name))
+    await user.send("You were unmuted in **{}**.".format(guild.name))
     return ctx.response.send_message("Successfully unmuted `{}`".format(str(user)))
 
 @client.command()
@@ -92,7 +94,8 @@ async def unmute(ctx: Context, user: Member):
 )
 async def kick(ctx: Context, user: Member, reason: str = None):
     """ Kick a user """
-    await user.send("You were kicked in **`{}`** for the following reason: **{}**.".format(Guild.name, reason))
+    guild = ctx.guild.fetch()
+    await user.send("You were kicked in **`{}`** for the following reason: **{}**.".format(guild.name, reason))
     await user.kick(reason = reason)
     return ctx.response.send_message("Successfully kicked `{}` for **{}**.".format(str(user), reason))
 
@@ -108,6 +111,4 @@ async def guildicon(ctx: Context):
     return ctx.response.send_message("Here's the icon of the guild." + "\n" + str(Guild.icon()))
 '''
 
-client.start(
-    port=9672
-)
+client.start()
