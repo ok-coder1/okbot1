@@ -4,3 +4,7 @@
 
 # Discord Credentials
 discord_creds.txt
+
+# Replit
+.replit
+replit.nix
