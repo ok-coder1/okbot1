@@ -106,7 +106,7 @@ async def kick(ctx: Context, user: Member, reason: str = None):
 )
 async def yesno(ctx: Context, yes: Member | User, no: Member | User):
     """ A command to show yes or now by a user """
-    if yes is not no:
+    if str(yes) is not str(no):
         return ctx.response.send_message("**{}**: Yes.\n**{}**: No.\n**{}**: Yes.\n**{}**: No.".format(str(yes), str(no), str(yes), str(no)))
     else:
         return ctx.response.send_message("The same person can't say both yes and no. It doesn't make sense.")
