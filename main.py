@@ -25,7 +25,7 @@ async def say(ctx, message: str):
 )
 async def avatar(ctx: Context, user: Member):
     """ Display the avatar of a user """
-    return ctx.response.send_message("Here's the avatar of the user you requested. \n {}".format(str(user.display_avatar)))
+    return ctx.response.send_message("Here's the avatar of the user you requested. \n {}".format(user.display_avatar))
 
 @client.command()
 @commands.describe(
