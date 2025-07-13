@@ -1,4 +1,4 @@
-from discord_http import Context, Client, commands, Member, PartialGuild
+from discord_http import Context, Client, commands, Member, User, PartialGuild
 import os
 from datetime import timedelta
 
@@ -23,7 +23,7 @@ async def say(ctx, message: str):
 @commands.describe(
     user = "The user you want the avatar of"
 )
-async def avatar(ctx: Context, user: Member):
+async def avatar(ctx: Context, user: Member | User):
     """ Display the avatar of a user """
     return ctx.response.send_message("Here's the avatar of the user you requested. \n {}".format(user.display_avatar))
 
@@ -98,6 +98,15 @@ async def kick(ctx: Context, user: Member, reason: str = None):
     await user.send("You were kicked in **`{}`** for the following reason: **{}**.".format(guild.name, reason))
     await user.kick(reason = reason)
     return ctx.response.send_message("Successfully kicked `{}` for **{}**.".format(str(user), reason))
+
+@client.command()
+@commands.describe(
+    yes = "The user saying yes",
+    no = "The user saying no"
+)
+async def yesno(ctx: Context, yes: Member | User, no: Member | User):
+    """ A command to show yes or now by a user """
+    await ctx.response.send_message("**`{}`**: Yes. \n **`{}`**: No. \n **`{}`**: Yes. \n **`{}`**: No.".format(str(yes), str(no), str(yes), str(no)))
 
 # TODO: Add back `/guildicon`
 # Issue URL: https://github.com/ok-coder1/okbot1/issues/2
