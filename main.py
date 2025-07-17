@@ -25,7 +25,7 @@ async def say(ctx, message: str):
 )
 async def avatar(ctx: Context, user: Member | User):
     """ Display the avatar of a user """
-    return ctx.response.send_message("Here's the avatar of the user you requested. \n {}".format(user.display_avatar))
+    return ctx.response.send_message("Here's the avatar of the user you requested. \n{}".format(user.display_avatar))
 
 @client.command()
 @commands.describe(
@@ -72,7 +72,7 @@ async def mute(ctx: Context, user: Member, days: int, hours: int, minutes: int, 
     guild = ctx.guild.fetch()
     muted_time = timedelta(days = days, hours = hours, minutes = minutes)
     await user.edit(communication_disabled_until = muted_time)
-    await user.send("You were muted in **`{}`** for `{}` minutes for the following reason: **{}**.".format(guild.name, str(muted_time), reason))
+    await user.send("You were muted in **`{}`** for `{}` minutes for the following reason: **{}**.".format("guild.name", str(muted_time), reason))
     return ctx.response.send_message("Successfully muted `{}` for **{}**.".format(str(user), reason))
 
 @client.command()
@@ -84,7 +84,7 @@ async def unmute(ctx: Context, user: Member):
     """ Unmute a user """
     guild = ctx.guild.fetch()
     await user.edit(communication_disabled_until = 0)
-    await user.send("You were unmuted in **{}**.".format(guild.name))
+    await user.send("You were unmuted in **{}**.".format('guild.name'))
     return ctx.response.send_message("Successfully unmuted `{}`".format(str(user)))
 
 @client.command()
