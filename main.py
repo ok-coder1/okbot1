@@ -95,7 +95,7 @@ async def unmute(ctx: Context, user: Member):
 async def kick(ctx: Context, user: Member, reason: str = None):
     """ Kick a user """
     guild = ctx.guild.fetch()
-    await user.send("You were kicked in **`{}`** for the following reason: **{}**.".format(guild.name, reason))
+    await user.send("You were kicked in **`{}`** for the following reason: **{}**.".format('guild.name', reason))
     await user.kick(reason = reason)
     return ctx.response.send_message("Successfully kicked `{}` for **{}**.".format(str(user), reason))
 
@@ -123,4 +123,6 @@ async def guildicon(ctx: Context):
     return ctx.response.send_message("Here's the icon of the guild." + "\n" + str(Guild.icon()))
 '''
 
-client.start()
+client.start(
+    port=os.environ["DISCORD_BOT_PORT"]
+)
